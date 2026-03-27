@@ -154,14 +154,17 @@ const handleSubmit = async (e: React.FormEvent) => {
               >
                 <div className="flex flex-col items-center gap-4">
                     {/* ✅ PREVIEW IMAGE */}
-                  <p>
-                    {thumbnail && (
+                 
+                    {thumbnail ? (
                       <img
                         src={thumbnail}
                         alt="Preview"
                         className="w-full max-w-sm rounded-lg"
                       />
-                    </p>
+                    ) : (
+                      <p>No preview available</p>
+                    )}
+                   
                     )}
 
                 <div className="flex items-center justify-center gap-2 text-green-200 mb-4">
