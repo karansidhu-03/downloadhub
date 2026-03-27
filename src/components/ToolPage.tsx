@@ -169,7 +169,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
                 <div className="flex items-center justify-center gap-2 text-green-200 mb-4">
                   <CheckCircle2 className="h-5 w-5" />
-                  <span className="font-medium">Ready to download!</span>
+                  <span className="font-medium">Ready to download! Test</span>
                 </div>
                 <Button onClick={() => window.open(downloadUrl, "_blank")} className="bg-card text-foreground hover:bg-card/90 font-semibold" >
                   <Download className="mr-2 h-4 w-4" /> Download Now
