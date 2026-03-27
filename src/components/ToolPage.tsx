@@ -164,8 +164,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     ) : (
                       <p>No preview available</p>
                     )}
-                   
-                    )}
+                
 
                 <div className="flex items-center justify-center gap-2 text-green-200 mb-4">
                   <CheckCircle2 className="h-5 w-5" />
