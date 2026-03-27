@@ -154,19 +154,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                 className="mt-6 bg-card/20 backdrop-blur-sm rounded-xl p-6 border border-primary-foreground/10"
               >
                 <div className="flex flex-col items-center gap-4">
-                    {/* ✅ PREVIEW IMAGE */}
-                 
                     {thumbnail ? (
-                      <img
-                        src={thumbnail}
-                        alt="Preview"
-                        className="w-full max-w-sm rounded-lg"
-                      />
-                    ) : (
-                      <p>No preview available</p>
+                        <img
+                          src={thumbnail}
+                          alt="Preview"
+                          className="w-full max-w-sm rounded-lg"
+                        />
+                      ) : (
+                        <p>No preview available</p>
                     )}
-                
-
                 <div className="flex items-center justify-center gap-2 text-green-200 mb-4">
                   <CheckCircle2 className="h-5 w-5" />
                   <span className="font-medium">Ready to download! Test</span>
