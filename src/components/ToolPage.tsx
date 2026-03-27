@@ -164,6 +164,11 @@ const handleSubmit = async (e: React.FormEvent) => {
                             alt="Preview"
                             className="w-full max-w-sm rounded-lg"
                             referrerPolicy="no-referrer"
+                            crossOrigin="anonymous"
+                            onError={(e) => {
+                              console.error("Image failed to load even with proxy");
+                              // Optional: set a fallback image here
+                            }}
                           />
                         ) : (
                           <p>No preview available</p>
