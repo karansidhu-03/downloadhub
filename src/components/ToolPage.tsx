@@ -179,8 +179,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <CheckCircle2 className="h-5 w-5" />
                     <span className="font-medium">Ready to download!</span>
                   </div>
+                    <div id="container-747dda126a3b07b380294c855fbd4805" className="w-full max-w-sm my-2 min-h-[50px]">
+         <script async="async" data-cfasync="false" src="https://pl29003937.profitablecpmratenetwork.com/747dda126a3b07b380294c855fbd4805/invoke.js"></script>
+      </div>
                   <Button 
                     onClick={async () => {
+                      window.open("https://www.profitablecpmratenetwork.com/c5fv366ys?key=9500a49c2e1e39d9dcc78e03078013ba", "_blank");
                       try {
                         setStatus("loading");
                         // This fetches the video data into the browser's memory
@@ -213,18 +217,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   >
                     <Download className="mr-2 h-4 w-4" /> Download Now
                   </Button>
-                            {downloadUrl && (
-          <div className="result-container">
-            <img src={thumbnail} alt="Thumbnail" />
-            
-            {/* ADSTERRA NATIVE BANNER HERE */}
-            <div id="container-28903439">
-               {/* Paste the specific <div> and <script> Adsterra gave you for Native Banner */}
-            </div>
-        
-            <Button onClick={handleDownload}>Download Now</Button>
-          </div>
-        )}
+                           
                   </div>
                 </motion.div>
             )}
