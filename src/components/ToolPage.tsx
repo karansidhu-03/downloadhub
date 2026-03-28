@@ -179,9 +179,28 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <span className="font-medium">Ready to download!</span>
                   </div>
                   <Button 
-                    onClick={() => {
-                      const workerBase = "https://downloadhubworker.karanvirsidhu03.workers.dev";
-                      window.location.href = `${workerBase}/download-file?file=${encodeURIComponent(downloadUrl)}`;
+                    onClick={async () => {
+                      try {
+                        setStatus("loading"); // Optional: show a spinner while the browser prepares the file
+                        const response = await fetch(downloadUrl);
+                        const blob = await response.blob();
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = `video_${Date.now()}.mp4`; // Forces the "Save As" dialog
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(blobUrl);
+                        
+                        setStatus("success");
+                      } catch (err) {
+                        console.error("Download failed", err);
+                        // Fallback: If Blob fetch is blocked by CORS, try opening in new tab
+                        window.open(downloadUrl, "_blank");
+                        setStatus("success");
+                      }
                     }} 
                     className="bg-card text-foreground hover:bg-card/90 font-semibold"
                   >
