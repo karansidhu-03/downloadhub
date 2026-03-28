@@ -178,7 +178,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <CheckCircle2 className="h-5 w-5" />
                     <span className="font-medium">Ready to download!</span>
                   </div>
-                  <Button onClick={() => window.open(downloadUrl, "_blank")} className="bg-card text-foreground hover:bg-card/90 font-semibold" >
+                  <Button 
+                    onClick={() => {
+                      const workerBase = "https://downloadhubworker.karanvirsidhu03.workers.dev";
+                      window.location.href = `${workerBase}/download-file?file=${encodeURIComponent(downloadUrl)}`;
+                    }} 
+                    className="bg-card text-foreground hover:bg-card/90 font-semibold"
+                  >
                     <Download className="mr-2 h-4 w-4" /> Download Now
                   </Button>
                   </div>
