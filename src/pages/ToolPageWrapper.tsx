@@ -4,8 +4,8 @@ import { getToolBySlug } from "@/lib/tools";
 import ToolPage from "@/components/ToolPage";
 
 const ToolPageWrapper = () => {
-  const { toolSlug } = useParams<{ toolSlug: string }>();
-  const tool = toolSlug ? getToolBySlug(toolSlug) : undefined;
+  const { slug } = useParams<{ slug: string }>();
+  const tool = slug ? getToolBySlug(slug) : undefined;
 
   useEffect(() => {
     if (tool) {
