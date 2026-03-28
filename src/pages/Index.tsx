@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { categories, tools, type ToolCategory } from "@/lib/tools";
 import AdBanner from "@/components/AdBanner";
 
-const popularSlugs = ["compress-pdf", "image-compressor", "pdf-to-word", "instagram-downloader", "video-converter", "tiktok-downloader"];
+const popularSlugs = ["compress-pdf", "image-compressor", "pdf-to-word", "downloader", "video-converter", "image-resizer"];
 const popularTools = popularSlugs.map((s) => tools.find((t) => t.slug === s)!).filter(Boolean);
 
 const features = [

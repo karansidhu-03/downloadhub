@@ -11,7 +11,6 @@ const navCategories: { key: ToolCategory; label: string }[] = [
   { key: "pdf", label: "PDF Tools" },
   { key: "image", label: "Image Tools" },
   { key: "video", label: "Video Tools" },
-  { key: "downloader", label: "Downloaders" },
 ];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -112,6 +111,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             ))}
 
             <Link
+              to="/downloader"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                location.pathname === "/downloader" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              Downloader
+            </Link>
+
+            <Link
               to="/blog"
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 location.pathname === "/blog" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -209,6 +217,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                   </div>
                 ))}
+                <Link to="/downloader" className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted">Downloader</Link>
                 <Link to="/blog" className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted">Blog</Link>
               </div>
             </motion.nav>
