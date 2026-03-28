@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import ToolPageWrapper from "./pages/ToolPageWrapper";
+import DownloaderPage from "./pages/DownloaderPage";
 import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import { categories, getToolBySlug } from "@/lib/tools";
@@ -33,6 +34,11 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/downloader" element={<DownloaderPage />} />
+            {/* Redirect old downloader routes */}
+            <Route path="/instagram-downloader" element={<Navigate to="/downloader" replace />} />
+            <Route path="/tiktok-downloader" element={<Navigate to="/downloader" replace />} />
+            <Route path="/youtube-shorts-downloader" element={<Navigate to="/downloader" replace />} />
             <Route path="/:slug" element={<SlugRouter />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

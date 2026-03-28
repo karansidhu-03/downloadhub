@@ -217,6 +217,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                   </div>
                 ))}
+                <Link to="/downloader" className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted">Downloader</Link>
                 <Link to="/blog" className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted">Blog</Link>
               </div>
             </motion.nav>
