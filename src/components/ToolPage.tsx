@@ -22,51 +22,43 @@ const ToolPage = ({ title, description, placeholder, icon, gradient, acceptFile,
   const [errorMsg, setErrorMsg] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
 
-  if (!acceptFile && !url.trim()) return;
-  if (!acceptFile && !url.startsWith("http")) {
-    setStatus("error");
-    setErrorMsg("Please enter a valid URL");
-    return;
-  }
-
-  setStatus("loading");
-  setErrorMsg("");
-
-  try {
-    // FIX 1: Sanitize URL (Strips tracking params like ?si= for YouTube/TikTok)
-    const cleanUrl = url.split('?')[0].trim();
-
-    // Build request URL
-    const apiUrl = `https://downloadhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanUrl)}`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
-
-    if (data.success && data.downloadUrl) {
-      setDownloadUrl(data.downloadUrl);
-      
-      // FIX 2: Only set the thumbnail ONCE using the proxy
-      if (data.thumbnail) {
-        const workerBase = "https://downloadhubworker.karanvirsidhu03.workers.dev";
-        const proxiedThumbnail = `${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`;
-        setThumbnail(proxiedThumbnail);
-      } else {
-        setThumbnail(""); 
-      }
-      
-      setStatus("success");
-    } else {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!acceptFile && !url.trim()) return;
+    if (!acceptFile && !url.startsWith("http")) {
       setStatus("error");
-      setErrorMsg(data.error || "Failed to fetch download link");
+      setErrorMsg("Please enter a valid URL");
+      return;
     }
-  } catch (err) {
-    setStatus("error");
-    setErrorMsg("Network error. Please try again.");
-  }
-};
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const cleanUrl = url.split('?')[0].trim();
+      const apiUrl = `https://downloadhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanUrl)}`;
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+
+      if (data.success && data.downloadUrl) {
+        setDownloadUrl(data.downloadUrl);
+        if (data.thumbnail) {
+          const workerBase = "https://downloadhubworker.karanvirsidhu03.workers.dev";
+          setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
+        } else {
+          setThumbnail("");
+        }
+        setStatus("success");
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error || "Failed to fetch download link");
+      }
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-[80vh]">
@@ -74,11 +66,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       <section className={`relative overflow-hidden py-16 md:py-24 ${gradient}`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="container mx-auto px-4 relative z-10">
-  {/* Add this line here */}
-  <div className="flex justify-center mb-8">
-    <AdBanner />
-  </div>
+          
+          <div className="flex justify-center mb-8">
+            <AdBanner />
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,11 +128,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     size="lg"
                     className="h-14 px-8 bg-card text-foreground hover:bg-card/90 font-semibold rounded-xl"
                   >
-                    {status === "loading" ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      <Download className="h-5 w-5" />
-                    )}
+                    {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
                   </Button>
                 </div>
               )}
@@ -182,12 +170,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <span className="font-medium">Ready to download!</span>
                   </div>
 
-                  {/* Ad Section */}
                   <div className="w-full flex justify-center py-2">
                     <AdBanner />
                   </div>
 
-                  {/* The Money Button */}
                   <a
                     href={downloadUrl}
                     target="_self"
