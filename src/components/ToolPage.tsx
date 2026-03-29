@@ -12,8 +12,38 @@ type ToolPageProps = {
   tool: Tool;
 };
 
+const ToolJsonLd = ({ tool }: { tool: Tool }) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": tool.title,
+    "url": `https://toolhub.app/${tool.slug}`,
+    "description": tool.metaDescription,
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  };
+
+  const faqJsonLd = tool.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": tool.faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a },
+    })),
+  } : null;
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+    </>
+  );
+};
+
 const ToolPage = ({ tool }: ToolPageProps) => {
-  const { title, description, placeholder, icon: Icon, gradient, acceptFile, fileAccept, faqs } = tool;
+  const { title, description, placeholder, icon: Icon, gradient, acceptFile, fileAccept, faqs, seoContent } = tool;
   const [url, setUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -62,6 +92,8 @@ const ToolPage = ({ tool }: ToolPageProps) => {
 
   return (
     <div className="min-h-[80vh]">
+      <ToolJsonLd tool={tool} />
+
       {/* Hero */}
       <section className={`relative overflow-hidden py-16 md:py-24 ${gradient}`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
@@ -147,6 +179,20 @@ const ToolPage = ({ tool }: ToolPageProps) => {
         </div>
       </section>
 
+      {/* SEO Content */}
+      {seoContent && (
+        <section className="container mx-auto px-4 pb-16">
+          <div className="max-w-3xl mx-auto bg-card rounded-2xl border border-border p-8">
+            <h2 className="font-display text-xl font-bold mb-4">{title}</h2>
+            <div className="text-sm text-muted-foreground space-y-3">
+              {seoContent.split("\n\n").map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       {faqs.length > 0 && (
         <section className="container mx-auto px-4 pb-16">
@@ -172,7 +218,7 @@ const ToolPage = ({ tool }: ToolPageProps) => {
       {/* Related Tools */}
       {relatedTools.length > 0 && (
         <section className="container mx-auto px-4 pb-16">
-          <h2 className="font-display text-2xl font-bold text-center mb-8">Related Tools</h2>
+          <h2 className="font-display text-2xl font-bold text-center mb-8">Related Tools You May Like</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {relatedTools.map((rt) => (
               <Link key={rt.slug} to={`/${rt.slug}`} className="group block bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-all card-shadow">
