@@ -106,9 +106,41 @@ const ToolPage = ({ tool }: ToolPageProps) => {
 };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // --- CASE 1: FILE TOOLS (PDF, Image, Video Compressor) ---
+    // This logic only runs if the tool is set to accept files (like PDF tools)
+    if (acceptFile) {
+      if (!file) {
+        setStatus("error");
+        setErrorMsg("Please select a file to continue.");
+        return;
+      }
+      
+      setStatus("loading");
+      setErrorMsg("");
+
+      try {
+        // Step 2 will go here: Actual PDF/Image processing engine
+        console.log("File detected for processing:", file.name);
+        
+        // Temporary placeholder so the UI doesn't hang
+        setTimeout(() => {
+          setStatus("error");
+          setErrorMsg("File processing engine is currently being connected. URL downloaders are still active.");
+        }, 2000);
+
+      } catch (err) {
+        setStatus("error");
+        setErrorMsg("An error occurred while processing your file.");
+      }
+      return; // Stop here so it doesn't try to run the URL logic
+    }
+
+    // --- CASE 2: URL DOWNLOADERS (Instagram, TikTok, YouTube) ---
+    // This is your EXISTING logic. It remains 100% the same.
     const cleanInput = url.trim();
-    if (!acceptFile && !cleanInput) return;
-    if (!acceptFile && !cleanInput.startsWith("http")) {
+    if (!cleanInput) return;
+    if (!cleanInput.startsWith("http")) {
       setStatus("error");
       setErrorMsg("Please enter a valid URL starting with http");
       return;
