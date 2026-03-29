@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://toolhub.app/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://toolhub.app/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://toolhub.app/downloader</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://toolhub.app/pdf-tools</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/image-tools</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/video-tools</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/instagram-downloader</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://toolhub.app/youtube-downloader</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://toolhub.app/tiktok-downloader</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://toolhub.app/downloaders</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/compress-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://toolhub.app/merge-pdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/split-pdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/pdf-to-word</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://toolhub.app/image-compressor</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://toolhub.app/image-resizer</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/image-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/video-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://toolhub.app/video-compressor</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/pdf-tools</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/image-tools</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/video-tools</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/compress-pdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/merge-pdf</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/split-pdf</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/pdf-to-word</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/image-compressor</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolhub.app/image-resizer</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/image-converter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/video-converter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/video-compressor</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolhub.app/blog/how-to-download-instagram-reels</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/tiktok-downloader-no-watermark</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/youtube-to-mp3-guide</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/instagram-story-downloader-guide</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/mp4-vs-mp3-format-guide</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/best-ways-download-social-media-videos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/top-tools-download-youtube-shorts</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/how-to-convert-video-to-mp3</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/free-instagram-downloader-tools-compared</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/why-people-use-online-video-downloaders</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/how-to-compress-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolhub.app/blog/best-image-compression-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

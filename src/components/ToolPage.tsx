@@ -17,7 +17,7 @@ const ToolJsonLd = ({ tool }: { tool: Tool }) => {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": tool.title,
-    "url": `https://clipgrabberhub.com/${tool.slug}`,
+    "url": `https://toolhub.app/${tool.slug}`,
     "description": tool.metaDescription,
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "All",
@@ -123,8 +123,8 @@ const ToolPage = ({ tool }: ToolPageProps) => {
                 </div>
               ) : (
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Input value={url} onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} placeholder={placeholder} className="flex-1 h-14 bg-card/20 backdrop-blur-sm border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 text-base rounded-xl" />
-                  <Button type="submit" disabled={!url.trim() || status === "loading"} size="lg" className="h-14 px-8 bg-card text-foreground hover:bg-card/90 font-semibold rounded-xl">
+                  <Input value={url} onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} placeholder={placeholder} className="flex-1 h-16 bg-card/20 backdrop-blur-md border-2 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-primary-foreground/60 transition-all" />
+                  <Button type="submit" disabled={!url.trim() || status === "loading"} size="lg" className="h-16 px-10 bg-card text-foreground hover:bg-card/90 font-bold text-lg rounded-2xl">
                     {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
                   </Button>
                 </div>
@@ -218,7 +218,7 @@ const ToolPage = ({ tool }: ToolPageProps) => {
       {/* Related Tools */}
       {relatedTools.length > 0 && (
         <section className="container mx-auto px-4 pb-16">
-          <h2 className="font-display text-2xl font-bold text-center mb-8">Related Tools You May Like</h2>
+          <h2 className="font-display text-2xl font-bold text-center mb-8">Try Other Tools</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {relatedTools.map((rt) => (
               <Link key={rt.slug} to={`/${rt.slug}`} className="group block bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-all card-shadow">

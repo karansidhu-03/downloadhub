@@ -33,7 +33,7 @@ export const tools: Tool[] = [
     shortTitle: "Instagram",
     description: "Download Instagram Reels, Stories, and Posts in HD. Save videos as MP4 or extract audio as MP3.",
     metaDescription: "Free Instagram downloader — save Reels, Stories & Posts in HD MP4 or MP3. No registration, no watermark. Works on all devices.",
-    seoContent: `ClipGrabber Hub's Instagram Downloader lets you save any public Instagram content to your device in seconds. Whether it's a Reel, Story, or regular Post — just paste the link and download.
+    seoContent: `ToolHub's Instagram Downloader lets you save any public Instagram content to your device in seconds. Whether it's a Reel, Story, or regular Post — just paste the link and download.
 
 Our tool automatically detects the content type and provides the best download options. Choose MP4 HD for crystal-clear video quality, MP4 SD for smaller file sizes perfect for sharing, or MP3 to extract just the audio.
 
@@ -41,7 +41,7 @@ Instagram Reels have become one of the most popular content formats. With our do
 
 All downloads happen instantly with no registration required. Your privacy is protected — we don't store any of your data or downloaded content. Compatible with iPhone, Android, Windows, Mac, and all modern browsers.
 
-Whether you're a content creator backing up your own posts, a social media manager archiving campaigns, or simply want to save inspiring content, ClipGrabber Hub makes it effortless.`,
+Whether you're a content creator backing up your own posts, a social media manager archiving campaigns, or simply want to save inspiring content, ToolHub makes it effortless.`,
     icon: Instagram,
     gradient: "bg-gradient-to-br from-pink-500 via-rose-500 to-purple-600",
     category: "downloader",
@@ -60,7 +60,7 @@ Whether you're a content creator backing up your own posts, a social media manag
     shortTitle: "TikTok",
     description: "Download TikTok videos without watermark in HD. Save as MP4 video or MP3 audio instantly.",
     metaDescription: "Free TikTok video downloader without watermark. Save TikTok videos in HD MP4 or extract audio as MP3. No registration needed.",
-    seoContent: `Download TikTok videos without the watermark using ClipGrabber Hub's free TikTok downloader. Get clean, high-quality videos ready for sharing or personal use.
+    seoContent: `Download TikTok videos without the watermark using ToolHub's free TikTok downloader. Get clean, high-quality videos ready for sharing or personal use.
 
 Our TikTok downloader automatically removes the TikTok watermark from your downloads, giving you a clean video file. No other tools or apps needed — just paste the link and download.
 
@@ -87,7 +87,7 @@ Our downloader works on all devices — desktop, tablet, and mobile. No software
     shortTitle: "YouTube",
     description: "Download YouTube videos and Shorts in MP4 or convert to MP3 audio. Fast, free, no registration.",
     metaDescription: "Free YouTube video downloader. Download YouTube videos & Shorts as MP4 or convert to MP3. No registration, fast & easy.",
-    seoContent: `ClipGrabber Hub's YouTube Downloader makes it easy to save YouTube videos and Shorts to your device. Convert any YouTube video to MP4 for offline viewing or MP3 for audio-only playback.
+    seoContent: `ToolHub's YouTube Downloader makes it easy to save YouTube videos and Shorts to your device. Convert any YouTube video to MP4 for offline viewing or MP3 for audio-only playback.
 
 Whether you want to save a music video, podcast, tutorial, or YouTube Short — our tool handles it all. Just paste the YouTube URL, choose your preferred format, and download instantly.
 
@@ -115,7 +115,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Compress",
     description: "Reduce PDF file size without losing quality. Optimize PDFs for email, web, and storage.",
     metaDescription: "Compress PDF files online for free. Reduce PDF size up to 90% without losing quality. Fast, secure, no registration required.",
-    seoContent: "Our free online PDF compressor helps you reduce the size of your PDF files quickly and easily. Whether you need to email a large document, upload a PDF to a website, or simply save storage space, our tool can shrink your PDFs by up to 90% while maintaining visual quality.\n\nThe compression process is entirely browser-based — your files never leave your device. This ensures complete privacy and security. We use intelligent compression algorithms that analyze each page and optimize images, fonts, and metadata without affecting readability.\n\nClipGrabber Hub's PDF compressor supports files up to 100MB and works on all devices including desktop, tablet, and mobile. No software installation or registration required — just upload, compress, and download.",
+    seoContent: "Our free online PDF compressor helps you reduce the size of your PDF files quickly and easily. Whether you need to email a large document, upload a PDF to a website, or simply save storage space, our tool can shrink your PDFs by up to 90% while maintaining visual quality.\n\nThe compression process is entirely browser-based — your files never leave your device. This ensures complete privacy and security. We use intelligent compression algorithms that analyze each page and optimize images, fonts, and metadata without affecting readability.\n\nToolHub's PDF compressor supports files up to 100MB and works on all devices including desktop, tablet, and mobile. No software installation or registration required — just upload, compress, and download.",
     icon: Minimize2,
     gradient: "bg-gradient-to-br from-red-500 via-rose-500 to-pink-500",
     category: "pdf",
@@ -134,7 +134,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Merge",
     description: "Combine multiple PDF files into one document. Easy drag-and-drop interface.",
     metaDescription: "Merge PDF files online for free. Combine multiple PDFs into one document in seconds. No software needed.",
-    seoContent: "Easily combine multiple PDF documents into a single file with ClipGrabber Hub's free online PDF merger. Whether you're compiling reports, combining invoices, or assembling a portfolio, our tool makes it simple.\n\nJust drag and drop your PDF files, arrange them in your preferred order, and click merge. The entire process takes seconds and produces a high-quality combined document.\n\nOur PDF merger preserves all formatting, images, links, and bookmarks from the original files. It works entirely in your browser, so your documents remain private and secure.",
+    seoContent: "Easily combine multiple PDF documents into a single file with ToolHub's free online PDF merger. Whether you're compiling reports, combining invoices, or assembling a portfolio, our tool makes it simple.\n\nJust drag and drop your PDF files, arrange them in your preferred order, and click merge. The entire process takes seconds and produces a high-quality combined document.\n\nOur PDF merger preserves all formatting, images, links, and bookmarks from the original files. It works entirely in your browser, so your documents remain private and secure.",
     icon: Merge,
     gradient: "bg-gradient-to-br from-rose-500 via-red-500 to-orange-500",
     category: "pdf",
@@ -152,7 +152,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Split",
     description: "Split a PDF into multiple files. Extract specific pages from your document.",
     metaDescription: "Split PDF files online for free. Extract pages or split into multiple documents instantly.",
-    seoContent: "Need to extract specific pages from a PDF? ClipGrabber Hub's free PDF splitter lets you break any PDF into smaller files or pull out individual pages in seconds.\n\nPerfect for extracting chapters from ebooks, separating invoices, or pulling specific pages from a large report. Simply upload your PDF, select the pages you want, and download.\n\nThe tool preserves all formatting and quality from the original document. Works on any device with no software installation required.",
+    seoContent: "Need to extract specific pages from a PDF? ToolHub's free PDF splitter lets you break any PDF into smaller files or pull out individual pages in seconds.\n\nPerfect for extracting chapters from ebooks, separating invoices, or pulling specific pages from a large report. Simply upload your PDF, select the pages you want, and download.\n\nThe tool preserves all formatting and quality from the original document. Works on any device with no software installation required.",
     icon: SplitSquareHorizontal,
     gradient: "bg-gradient-to-br from-orange-500 via-red-500 to-rose-500",
     category: "pdf",
@@ -170,7 +170,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "To Word",
     description: "Convert PDF files to editable Word documents while preserving formatting.",
     metaDescription: "Convert PDF to Word (DOCX) online for free. Preserve formatting and layout. Fast and accurate conversion.",
-    seoContent: "Convert your PDF documents to fully editable Microsoft Word (DOCX) files with ClipGrabber Hub's free online converter. Our advanced conversion engine preserves the original formatting, fonts, images, and layout.\n\nWhether you need to edit a contract, update a report, or modify a brochure, our PDF to Word converter makes it easy. The output is compatible with Microsoft Word, Google Docs, and other word processors.\n\nSimply upload your PDF, wait a few seconds, and download your editable Word document. No registration or software installation needed.",
+    seoContent: "Convert your PDF documents to fully editable Microsoft Word (DOCX) files with ToolHub's free online converter. Our advanced conversion engine preserves the original formatting, fonts, images, and layout.\n\nWhether you need to edit a contract, update a report, or modify a brochure, our PDF to Word converter makes it easy. The output is compatible with Microsoft Word, Google Docs, and other word processors.\n\nSimply upload your PDF, wait a few seconds, and download your editable Word document. No registration or software installation needed.",
     icon: FileOutput,
     gradient: "bg-gradient-to-br from-blue-500 via-indigo-500 to-violet-500",
     category: "pdf",
@@ -189,7 +189,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Compress",
     description: "Compress JPEG, PNG, and WebP images without losing quality. Reduce file size up to 80%.",
     metaDescription: "Compress images online for free. Reduce JPEG, PNG, WebP size up to 80% without quality loss. Fast bulk compression.",
-    seoContent: "Optimize your images for the web with ClipGrabber Hub's free online image compressor. Reduce JPEG, PNG, and WebP file sizes by up to 80% while maintaining visual quality.\n\nPerfect for web developers, bloggers, and anyone who needs to optimize images for faster page loading. Our smart compression algorithms analyze each image and apply the optimal compression level.\n\nSupports batch compression — upload multiple images at once and download them all compressed. Works entirely in your browser for maximum privacy and speed.",
+    seoContent: "Optimize your images for the web with ToolHub's free online image compressor. Reduce JPEG, PNG, and WebP file sizes by up to 80% while maintaining visual quality.\n\nPerfect for web developers, bloggers, and anyone who needs to optimize images for faster page loading. Our smart compression algorithms analyze each image and apply the optimal compression level.\n\nSupports batch compression — upload multiple images at once and download them all compressed. Works entirely in your browser for maximum privacy and speed.",
     icon: Minimize2,
     gradient: "bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500",
     category: "image",
@@ -208,7 +208,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Resize",
     description: "Resize images to any dimension. Perfect for social media, web, and print.",
     metaDescription: "Resize images online for free. Change dimensions for social media, web, or print. Maintains aspect ratio.",
-    seoContent: "Quickly resize your images to any dimension with ClipGrabber Hub's free online image resizer. Whether you need to prepare images for social media, optimize photos for your website, or create print-ready files, our tool handles it all.\n\nChoose from preset sizes for popular social media platforms or enter custom dimensions. The tool automatically maintains aspect ratio to prevent distortion.\n\nSupports JPEG, PNG, and WebP output formats. No registration or software needed — resize your images directly in your browser.",
+    seoContent: "Quickly resize your images to any dimension with ToolHub's free online image resizer. Whether you need to prepare images for social media, optimize photos for your website, or create print-ready files, our tool handles it all.\n\nChoose from preset sizes for popular social media platforms or enter custom dimensions. The tool automatically maintains aspect ratio to prevent distortion.\n\nSupports JPEG, PNG, and WebP output formats. No registration or software needed — resize your images directly in your browser.",
     icon: Maximize2,
     gradient: "bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500",
     category: "image",
@@ -226,7 +226,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Convert",
     description: "Convert images between formats: JPEG, PNG, WebP, GIF, and more.",
     metaDescription: "Convert images between formats online for free. Support JPEG, PNG, WebP, GIF, BMP. Instant conversion.",
-    seoContent: "Convert images between all popular formats with ClipGrabber Hub's free online image converter. Support for JPEG, PNG, WebP, GIF, and BMP means you can convert any image to the format you need.\n\nNeed to convert PNG to JPEG for smaller file sizes? Or convert JPEG to WebP for better web performance? Our tool handles all conversions instantly in your browser.\n\nBatch conversion is supported — convert multiple images at once. All processing happens locally in your browser for maximum speed and privacy.",
+    seoContent: "Convert images between all popular formats with ToolHub's free online image converter. Support for JPEG, PNG, WebP, GIF, and BMP means you can convert any image to the format you need.\n\nNeed to convert PNG to JPEG for smaller file sizes? Or convert JPEG to WebP for better web performance? Our tool handles all conversions instantly in your browser.\n\nBatch conversion is supported — convert multiple images at once. All processing happens locally in your browser for maximum speed and privacy.",
     icon: RefreshCw,
     gradient: "bg-gradient-to-br from-fuchsia-500 via-pink-500 to-rose-500",
     category: "image",
@@ -245,7 +245,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "To MP4",
     description: "Convert any video format to MP4 quickly and easily. Supports AVI, MOV, MKV, WebM and more.",
     metaDescription: "Convert video to MP4 online for free. Support AVI, MOV, MKV, WebM. Fast browser-based conversion.",
-    seoContent: "Convert your videos to MP4 format with ClipGrabber Hub's free online video converter. MP4 is the most widely supported video format, compatible with virtually all devices and platforms.\n\nOur converter supports input formats including AVI, MOV, MKV, WebM, FLV, and WMV. Simply upload your video, and we'll convert it to a high-quality MP4 file.\n\nThe conversion process happens directly in your browser using advanced WebAssembly technology. Your videos are never uploaded to external servers, ensuring complete privacy. Supports files up to 500MB.",
+    seoContent: "Convert your videos to MP4 format with ToolHub's free online video converter. MP4 is the most widely supported video format, compatible with virtually all devices and platforms.\n\nOur converter supports input formats including AVI, MOV, MKV, WebM, FLV, and WMV. Simply upload your video, and we'll convert it to a high-quality MP4 file.\n\nThe conversion process happens directly in your browser using advanced WebAssembly technology. Your videos are never uploaded to external servers, ensuring complete privacy. Supports files up to 500MB.",
     icon: FileVideo,
     gradient: "bg-gradient-to-br from-amber-500 via-yellow-500 to-orange-400",
     category: "video",
@@ -264,7 +264,7 @@ No software needed, no registration required, works on any device. Your download
     shortTitle: "Compress",
     description: "Reduce video file size while maintaining quality. Perfect for sharing and uploading.",
     metaDescription: "Compress video files online for free. Reduce video size without quality loss. Fast and easy.",
-    seoContent: "Reduce the size of your video files without sacrificing quality using ClipGrabber Hub's free online video compressor. Perfect for sharing videos via email, messaging apps, or uploading to social media with file size limits.\n\nOur intelligent compression technology analyzes your video and applies optimal settings to achieve the best balance between file size and visual quality.\n\nWorks with MP4, AVI, MOV, MKV, and other popular video formats. All processing happens in your browser — your videos stay private and secure.",
+    seoContent: "Reduce the size of your video files without sacrificing quality using ToolHub's free online video compressor. Perfect for sharing videos via email, messaging apps, or uploading to social media with file size limits.\n\nOur intelligent compression technology analyzes your video and applies optimal settings to achieve the best balance between file size and visual quality.\n\nWorks with MP4, AVI, MOV, MKV, and other popular video formats. All processing happens in your browser — your videos stay private and secure.",
     icon: Minimize2,
     gradient: "bg-gradient-to-br from-yellow-500 via-amber-500 to-orange-500",
     category: "video",

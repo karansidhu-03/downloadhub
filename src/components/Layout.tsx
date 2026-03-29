@@ -55,7 +55,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg gradient-hero">
               <Download className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl font-bold gradient-text">ClipGrabber Hub</span>
+            <span className="font-display text-xl font-bold gradient-text">ToolHub</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -229,7 +229,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-hero">
                   <Download className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="font-display text-lg font-bold">ClipGrabber Hub</span>
+                <span className="font-display text-lg font-bold">ToolHub</span>
               </Link>
               <p className="text-sm text-muted-foreground max-w-xs">
                 Free online tools to download videos, compress PDFs, and convert files. Fast, secure, and easy to use.
@@ -251,9 +251,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             ))}
           </div>
           <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <span>© {new Date().getFullYear()} ClipGrabber Hub. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ToolHub. All rights reserved.</span>
             <div className="flex gap-4">
               <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <Link to="/instagram-downloader" className="hover:text-primary transition-colors">Instagram</Link>
+              <Link to="/youtube-downloader" className="hover:text-primary transition-colors">YouTube</Link>
+              <Link to="/tiktok-downloader" className="hover:text-primary transition-colors">TikTok</Link>
             </div>
           </div>
         </div>

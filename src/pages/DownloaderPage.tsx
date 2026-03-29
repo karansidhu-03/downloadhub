@@ -3,11 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Download, Loader2, AlertCircle, CheckCircle2,
-  Instagram, Youtube, Video, Music, Film, ChevronDown, ChevronRight,
+  Instagram, Youtube, Video, Music, Film, ChevronDown, ChevronRight, ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import AdBanner from "@/components/AdBanner";
 import { getToolBySlug, getRelatedTools, type Tool } from "@/lib/tools";
@@ -23,8 +22,9 @@ const formats: { value: Format; label: string; icon: any; desc: string }[] = [
 const platformMeta: Record<string, {
   heroGradient: string;
   orbs: { color: string; position: string; size: string; blur: string; duration: string }[];
-  contentTabs?: { key: string; label: string }[];
-  features: string[];
+  subtitle: string;
+  crossLinks: { slug: string; label: string; text: string }[];
+  benefits: string[];
 }> = {
   "instagram-downloader": {
     heroGradient: "from-[#833ab4] via-[#c13584] to-[#e1306c]",
@@ -33,12 +33,19 @@ const platformMeta: Record<string, {
       { color: "bg-[#e1306c]/30", position: "bottom-[-20%] right-[-10%]", size: "w-[400px] h-[400px]", blur: "blur-[100px]", duration: "animate-[pulse_10s_ease-in-out_infinite_1s]" },
       { color: "bg-[#fccc63]/15", position: "top-[30%] right-[15%]", size: "w-[300px] h-[300px]", blur: "blur-[90px]", duration: "animate-[pulse_12s_ease-in-out_infinite_2s]" },
     ],
-    contentTabs: [
-      { key: "reels", label: "Reels" },
-      { key: "stories", label: "Stories" },
-      { key: "posts", label: "Posts" },
+    subtitle: "Instagram Downloader – Reels, Stories & Posts in HD",
+    crossLinks: [
+      { slug: "youtube-downloader", label: "YouTube Downloader", text: "Looking to download YouTube videos?" },
+      { slug: "tiktok-downloader", label: "TikTok Downloader", text: "Want to save TikTok videos without watermark?" },
     ],
-    features: ["Download Reels in HD", "Save Stories before they expire", "Download photo & video Posts", "MP4 & MP3 formats", "No watermark"],
+    benefits: [
+      "Download Instagram Reels in full HD quality",
+      "Save Stories before they disappear after 24 hours",
+      "Download photo and video Posts easily",
+      "Convert Instagram videos to MP3 audio",
+      "No watermark on any downloads",
+      "Works on all devices — mobile, tablet, desktop",
+    ],
   },
   "tiktok-downloader": {
     heroGradient: "from-[#010101] via-[#25f4ee]/80 to-[#fe2c55]/80",
@@ -47,7 +54,19 @@ const platformMeta: Record<string, {
       { color: "bg-[#fe2c55]/25", position: "bottom-[-15%] right-[-10%]", size: "w-[450px] h-[450px]", blur: "blur-[110px]", duration: "animate-[pulse_11s_ease-in-out_infinite_1s]" },
       { color: "bg-[#010101]/20", position: "top-[40%] left-[20%]", size: "w-[250px] h-[250px]", blur: "blur-[80px]", duration: "animate-[pulse_8s_ease-in-out_infinite_0.5s]" },
     ],
-    features: ["No watermark downloads", "HD quality video", "Extract audio as MP3", "Fast processing", "Works on all devices"],
+    subtitle: "Download TikTok Videos Without Watermark in HD or Convert to MP3",
+    crossLinks: [
+      { slug: "instagram-downloader", label: "Instagram Downloader", text: "Need to download Instagram Reels?" },
+      { slug: "youtube-downloader", label: "YouTube Downloader", text: "Want to save YouTube videos or Shorts?" },
+    ],
+    benefits: [
+      "Download TikTok videos without watermark",
+      "HD quality video downloads",
+      "Extract audio as MP3 from any TikTok",
+      "Fast processing — instant downloads",
+      "No app installation required",
+      "Works on iPhone, Android, and desktop",
+    ],
   },
   "youtube-downloader": {
     heroGradient: "from-[#cc0000] via-[#ff0000] to-[#ff4444]",
@@ -56,7 +75,19 @@ const platformMeta: Record<string, {
       { color: "bg-[#282828]/20", position: "bottom-[-15%] right-[-10%]", size: "w-[400px] h-[400px]", blur: "blur-[100px]", duration: "animate-[pulse_10s_ease-in-out_infinite_1s]" },
       { color: "bg-[#ff6666]/15", position: "top-[35%] right-[20%]", size: "w-[300px] h-[300px]", blur: "blur-[90px]", duration: "animate-[pulse_12s_ease-in-out_infinite_2s]" },
     ],
-    features: ["Download YouTube Videos", "Save YouTube Shorts", "Convert to MP3 audio", "HD quality up to 1080p", "No software needed"],
+    subtitle: "Download YouTube Videos, Shorts & Extract Audio as MP3",
+    crossLinks: [
+      { slug: "instagram-downloader", label: "Instagram Downloader", text: "Want to download Instagram Reels and Stories?" },
+      { slug: "tiktok-downloader", label: "TikTok Downloader", text: "Need to save TikTok videos without watermark?" },
+    ],
+    benefits: [
+      "Download YouTube videos in HD up to 1080p",
+      "Save YouTube Shorts easily",
+      "Convert YouTube videos to MP3 audio",
+      "No software or browser extension needed",
+      "Fast and free — no registration required",
+      "Compatible with all devices and browsers",
+    ],
   },
 };
 
@@ -79,7 +110,7 @@ const DownloaderPage = () => {
 
   useEffect(() => {
     if (tool) {
-      document.title = `${tool.title} — Free Online Tool | ClipGrabber Hub`;
+      document.title = `${tool.title} — Free Online Tool | ToolHub`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute("content", tool.metaDescription);
     }
@@ -133,12 +164,11 @@ const DownloaderPage = () => {
     }
   };
 
-  // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: tool.title,
-    url: `https://clipgrabberhub.com/${tool.slug}`,
+    url: `https://toolhub.app/${tool.slug}`,
     description: tool.metaDescription,
     applicationCategory: "MultimediaApplication",
     operatingSystem: "All",
@@ -176,7 +206,6 @@ const DownloaderPage = () => {
         <div className={`absolute inset-0 bg-gradient-to-br ${meta.heroGradient} opacity-90`} />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
 
-        {/* Glowing orbs */}
         {meta.orbs.map((orb, i) => (
           <div key={i} className={`absolute ${orb.position} ${orb.size} rounded-full ${orb.color} ${orb.blur} ${orb.duration}`} />
         ))}
@@ -188,35 +217,12 @@ const DownloaderPage = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm mb-6">
               <Icon className="h-8 w-8 text-white" />
             </div>
-            <h1 className="font-display text-3xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="font-display text-3xl md:text-5xl font-bold text-white mb-3">
               {tool.title}
             </h1>
-            <p className="text-white/80 text-lg mb-4">{tool.description}</p>
+            <p className="text-white/70 text-base mb-8">{meta.subtitle}</p>
 
-            {/* Feature badges */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-              {meta.features.slice(0, 3).map((f) => (
-                <span key={f} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-white/90 text-sm">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  {f}
-                </span>
-              ))}
-            </div>
-
-            {/* Content type tabs for Instagram */}
-            {meta.contentTabs && (
-              <Tabs defaultValue="reels" className="mb-6">
-                <TabsList className="bg-white/15 backdrop-blur-sm border-0">
-                  {meta.contentTabs.map((tab) => (
-                    <TabsTrigger key={tab.key} value={tab.key} className="text-white/70 data-[state=active]:text-white data-[state=active]:bg-white/20">
-                      {tab.label}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-            )}
-
-            {/* Input */}
+            {/* Search Bar - prominent */}
             <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
@@ -227,14 +233,14 @@ const DownloaderPage = () => {
                     value={url}
                     onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }}
                     placeholder={tool.placeholder}
-                    className="h-14 pl-12 bg-white/15 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 text-base rounded-xl"
+                    className="h-16 pl-12 bg-white/20 backdrop-blur-md border-2 border-white/30 text-white placeholder:text-white/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-white/60 focus:shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all"
                   />
                 </div>
                 <Button
                   type="submit"
                   disabled={!url.trim() || status === "loading"}
                   size="lg"
-                  className="h-14 px-8 bg-white text-gray-900 hover:bg-white/90 font-semibold rounded-xl"
+                  className="h-16 px-10 bg-white text-gray-900 hover:bg-white/90 font-bold text-lg rounded-2xl shadow-lg"
                 >
                   {status === "loading" ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -353,15 +359,15 @@ const DownloaderPage = () => {
         </div>
       </section>
 
-      {/* Features list */}
+      {/* Benefits */}
       <section className="container mx-auto px-4 pb-16">
         <div className="max-w-3xl mx-auto bg-card rounded-2xl border border-border p-8">
           <h2 className="font-display text-xl font-bold mb-4">Why Use Our {tool.shortTitle} Downloader?</h2>
           <ul className="grid sm:grid-cols-2 gap-3">
-            {meta.features.map((f) => (
-              <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                {f}
+            {meta.benefits.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                {b}
               </li>
             ))}
           </ul>
@@ -400,11 +406,26 @@ const DownloaderPage = () => {
 
       <AdBanner className="container mx-auto px-4 rounded-lg" />
 
-      {/* Related Tools */}
-      {relatedTools.length > 0 && (
-        <section className="container mx-auto px-4 pb-16">
+      {/* Cross-links */}
+      <section className="container mx-auto px-4 pb-16">
+        <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-2xl font-bold text-center mb-8">Try Other Tools</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="space-y-4 mb-8">
+            {meta.crossLinks.map((cl) => (
+              <div key={cl.slug} className="bg-card rounded-xl border border-border p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p className="text-sm text-muted-foreground">{cl.text}</p>
+                <Link
+                  to={`/${cl.slug}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                >
+                  {cl.label} <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Related tools grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {relatedTools.map((rt) => (
               <Link key={rt.slug} to={`/${rt.slug}`} className="group block bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-all card-shadow">
                 <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${rt.gradient} text-primary-foreground mb-3 group-hover:scale-110 transition-transform`}>
@@ -415,8 +436,8 @@ const DownloaderPage = () => {
               </Link>
             ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
     </div>
   );
 };

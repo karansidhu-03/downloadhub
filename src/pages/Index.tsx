@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Shield, Globe, Search, TrendingUp, Instagram, Youtube, Video } from "lucide-react";
+import { ArrowRight, Zap, Shield, Globe, Search, TrendingUp, Instagram, Youtube, Video, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { categories, tools, type ToolCategory } from "@/lib/tools";
 import AdBanner from "@/components/AdBanner";
 
@@ -14,6 +15,22 @@ const features = [
   { icon: Zap, title: "Lightning Fast", desc: "Instant processing with no wait times" },
   { icon: Shield, title: "100% Free & Secure", desc: "No registration, no data stored on servers" },
   { icon: Globe, title: "Works Everywhere", desc: "Compatible with all devices and browsers" },
+];
+
+const homeFaqs = [
+  { q: "Is ToolHub really free?", a: "Yes, all tools on ToolHub are 100% free to use. No registration, no hidden charges, and no limits on usage." },
+  { q: "Do I need to install any software?", a: "No. All tools work directly in your web browser. No downloads, no extensions, no apps needed." },
+  { q: "Is it safe to use ToolHub?", a: "Absolutely. Your files and links are processed securely. We don't store your data or downloaded content on our servers." },
+  { q: "Can I download videos from Instagram, YouTube, and TikTok?", a: "Yes! ToolHub supports downloading videos from Instagram (Reels, Stories, Posts), YouTube (videos and Shorts), and TikTok (without watermark). You can save as MP4 or extract audio as MP3." },
+  { q: "What file tools are available?", a: "We offer PDF tools (compress, merge, split, convert to Word), image tools (compress, resize, convert formats), and video tools (convert to MP4, compress videos)." },
+  { q: "Does ToolHub work on mobile?", a: "Yes, ToolHub is fully responsive and works perfectly on iPhone, Android, tablets, and desktop browsers." },
+];
+
+const blogPreviews = [
+  { slug: "how-to-download-instagram-reels", title: "How to Download Instagram Reels in 2026", category: "Instagram" },
+  { slug: "tiktok-downloader-no-watermark", title: "Save TikTok Videos Without Watermark", category: "TikTok" },
+  { slug: "youtube-to-mp3-guide", title: "Convert YouTube Videos to MP3", category: "YouTube" },
+  { slug: "instagram-story-downloader-guide", title: "Instagram Story Downloader Guide", category: "Instagram" },
 ];
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -41,22 +58,22 @@ const Index = () => {
               Free Online Tools — No Sign Up Required
             </span>
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-              Free Online <span className="gradient-text">Video Downloader</span> & File Converter Tools
+              Download <span className="gradient-text">Instagram, YouTube & TikTok</span> Videos in HD
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Download videos from Instagram, TikTok & YouTube without watermark. Compress PDFs, convert images — 15+ free tools for every file task.
+              Save videos without watermark, convert to MP3, compress PDFs, optimize images — 15+ free tools for every file task. No registration required.
             </p>
 
             {/* Quick access buttons */}
             <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
               <Link to="/instagram-downloader" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-medium text-sm hover:opacity-90 transition-opacity">
-                <Instagram className="h-4 w-4" /> Instagram
+                <Instagram className="h-4 w-4" /> Instagram Downloader
               </Link>
               <Link to="/tiktok-downloader" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium text-sm hover:opacity-90 transition-opacity">
-                <Video className="h-4 w-4" /> TikTok
+                <Video className="h-4 w-4" /> TikTok Downloader
               </Link>
               <Link to="/youtube-downloader" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white font-medium text-sm hover:opacity-90 transition-opacity">
-                <Youtube className="h-4 w-4" /> YouTube
+                <Youtube className="h-4 w-4" /> YouTube Downloader
               </Link>
             </div>
 
@@ -69,7 +86,7 @@ const Index = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search tools: compress PDF, download TikTok..."
-                    className="h-14 pl-12 text-base rounded-xl"
+                    className="h-14 pl-12 text-base rounded-xl border-2 border-border focus:border-primary shadow-sm"
                   />
                 </div>
                 <Button
@@ -167,13 +184,13 @@ const Index = () => {
           <h2 className="font-display text-xl font-bold mb-4">Your All-in-One Online File Toolkit</h2>
           <div className="text-sm text-muted-foreground space-y-3">
             <p>
-              ClipGrabber Hub is your go-to destination for free online tools. Download videos from <Link to="/instagram-downloader" className="text-primary hover:underline">Instagram</Link>, <Link to="/tiktok-downloader" className="text-primary hover:underline">TikTok (no watermark)</Link>, and <Link to="/youtube-downloader" className="text-primary hover:underline">YouTube</Link> in MP4 or MP3 format — or use our powerful file tools to <Link to="/compress-pdf" className="text-primary hover:underline">compress PDFs</Link>, <Link to="/image-compressor" className="text-primary hover:underline">optimize images</Link>, and <Link to="/video-converter" className="text-primary hover:underline">convert videos</Link>.
+              ToolHub is your go-to destination for free online tools. Download videos from <Link to="/instagram-downloader" className="text-primary hover:underline">Instagram</Link>, <Link to="/tiktok-downloader" className="text-primary hover:underline">TikTok (no watermark)</Link>, and <Link to="/youtube-downloader" className="text-primary hover:underline">YouTube</Link> in MP4 or MP3 format — or use our powerful file tools to <Link to="/compress-pdf" className="text-primary hover:underline">compress PDFs</Link>, <Link to="/image-compressor" className="text-primary hover:underline">optimize images</Link>, and <Link to="/video-converter" className="text-primary hover:underline">convert videos</Link>.
             </p>
             <p>
               All tools are 100% free, require no registration, and work directly in your browser. Your files never leave your device, ensuring complete privacy and security.
             </p>
             <p>
-              From <Link to="/pdf-to-word" className="text-primary hover:underline">PDF to Word conversion</Link> to <Link to="/image-resizer" className="text-primary hover:underline">image resizing</Link> and <Link to="/video-compressor" className="text-primary hover:underline">video compression</Link> — ClipGrabber Hub provides fast, reliable tools for all your file needs.
+              From <Link to="/pdf-to-word" className="text-primary hover:underline">PDF to Word conversion</Link> to <Link to="/image-resizer" className="text-primary hover:underline">image resizing</Link> and <Link to="/video-compressor" className="text-primary hover:underline">video compression</Link> — ToolHub provides fast, reliable tools for all your file needs.
             </p>
           </div>
         </div>
@@ -194,14 +211,42 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Blog CTA */}
-      <section className="container mx-auto px-4 pb-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-display text-2xl font-bold mb-3">Learn More on Our Blog</h2>
-          <p className="text-muted-foreground mb-6">Read guides and tips about video downloading, PDF compression, image optimization, and more.</p>
+      {/* Blog Previews */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-8">
+          <h2 className="font-display text-2xl md:text-3xl font-bold mb-3">Latest from Our Blog</h2>
+          <p className="text-muted-foreground">Guides and tips for downloading videos and managing files.</p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-6">
+          {blogPreviews.map((post) => (
+            <Link key={post.slug} to={`/blog/${post.slug}`} className="group block bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-all card-shadow">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">{post.category}</span>
+              <h3 className="font-display text-sm font-semibold mt-3 mb-1 group-hover:text-primary transition-colors">{post.title}</h3>
+            </Link>
+          ))}
+        </div>
+        <div className="text-center">
           <Link to="/blog" className="inline-flex items-center gap-2 text-primary font-medium hover:underline">
-            Visit the Blog <ArrowRight className="h-4 w-4" />
+            View All Articles <ArrowRight className="h-4 w-4" />
           </Link>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="container mx-auto px-4 pb-16">
+        <h2 className="font-display text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+        <div className="max-w-2xl mx-auto space-y-3">
+          {homeFaqs.map((faq, i) => (
+            <Collapsible key={i}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full bg-card rounded-xl p-4 border border-border text-left hover:border-primary/30 transition-colors group">
+                <span className="font-medium text-sm">{faq.q}</span>
+                <ChevronDown className="h-4 w-4 text-muted-foreground group-data-[state=open]:rotate-180 transition-transform" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-4 pb-4 pt-2 text-sm text-muted-foreground">
+                {faq.a}
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
         </div>
       </section>
     </>
