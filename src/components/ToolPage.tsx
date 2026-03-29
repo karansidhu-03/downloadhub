@@ -1,236 +1,185 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Download, Loader2, AlertCircle, CheckCircle2, ChevronDown, ClipboardPaste, Eye, Files } from "lucide-react";
+import { Download, Loader2, AlertCircle, CheckCircle2, ClipboardPaste, Eye, Files } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import AdBanner from "./AdBanner";
-import { type Tool, getRelatedTools } from "@/lib/tools";
-import { compressPDF, mergePDFs, splitPDF, pdfToWord, processBatch } from "@/lib/pdf-engine";
+import { type Tool } from "@/lib/tools";
+import { compressPDF, compressImageFile, formatBytes, mergePDFs, splitPDF, pdfToWord, processBatch } from "@/lib/pdf-engine";
 
-type ToolPageProps = {
-  tool: Tool;
-};
+type ToolPageProps = { tool: Tool };
 
-type ProcessedResult = {
-  name: string;
-  url: string;
-  blob: Blob;
-  oldSize?: number;
-  newSize?: number;
-};
-
-const ToolJsonLd = ({ tool }: { tool: Tool }) => {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": tool.title,
-    "url": `https://toolhub.app/${tool.slug}`,
-    "description": tool.metaDescription,
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "All",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  };
-  const faqJsonLd = tool.faqs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": tool.faqs.map((faq) => ({
-      "@type": "Question",
-      "name": faq.q,
-      "acceptedAnswer": { "@type": "Answer", "text": faq.a },
-    })),
-  } : null;
-
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
-    </>
-  );
-};
-
-const ToolPage = ({ tool }: ToolPageProps) => {
-  const { title, description, placeholder, icon: Icon, gradient, acceptFile, fileAccept, faqs, seoContent } = tool;
+export default function ToolPage({ tool }: ToolPageProps) {
+  const { title, description, placeholder, icon: Icon, gradient, acceptFile, fileAccept } = tool;
 
   const [url, setUrl] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [results, setResults] = useState<ProcessedResult[]>([]);
+  const [results, setResults] = useState<any[]>([]);
   const [thumbnail, setThumbnail] = useState("");
-  const [canPaste, setCanPaste] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (typeof navigator === "undefined" || !navigator.clipboard || !navigator.clipboard.readText) {
-      setCanPaste(false);
-    }
-  }, []);
-
-  const relatedTools = getRelatedTools(tool.slug);
 
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
-      if (!text) throw new Error("Clipboard is empty");
-      setUrl(text.trim());
-      inputRef.current?.focus();
-      setStatus("idle");
-    } catch (err) {
-      setStatus("error");
-      setErrorMsg("Paste blocked. Please press Ctrl+V.");
+      setUrl(text);
+    } catch {
+      setErrorMsg("Paste failed");
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    // ================= FILE TOOLS =================
     if (acceptFile) {
-      if (files.length === 0) {
-        setStatus("error");
-        setErrorMsg("Please select at least one file to continue.");
-        return;
-      }
+      if (!files.length) return;
+
       setStatus("loading");
-      setErrorMsg("");
       setResults([]);
 
       try {
-        let processed: ProcessedResult[] = [];
+        let processed: any[] = [];
 
         if (tool.slug === "merge-pdf") {
           const blob = await mergePDFs(files);
-          processed = [{ 
-            name: "merged_document.pdf", 
-            url: URL.createObjectURL(blob), 
-            blob,
-            oldSize: files.reduce((acc, f) => acc + f.size, 0),
-            newSize: blob.size
-          }];
+          processed = [{ name: "merged.pdf", url: URL.createObjectURL(blob), blob }];
         } else {
           processed = await processBatch(files, async (f) => {
             if (tool.slug === "compress-pdf") return await compressPDF(f);
             if (tool.slug === "image-compressor") return await compressImageFile(f);
-            if (tool.slug === "pdf-to-word") {
-              const blob = await pdfToWord(f);
-              const newName = f.name.replace(/\.[^/.]+$/, "") + ".docx";
-              return { blob, name: newName };
-            }
+            if (tool.slug === "pdf-to-word") return { blob: await pdfToWord(f), name: f.name + ".docx" };
             if (tool.slug === "split-pdf") return { blob: await splitPDF(f) };
-            throw new Error("Tool logic not found.");
           });
         }
+
         setResults(processed);
         setStatus("success");
       } catch (err: any) {
+        setErrorMsg(err.message);
         setStatus("error");
-        setErrorMsg(err.message || "Failed to process.");
       }
       return;
     }
 
-    // URL download logic
-    const cleanInput = url.trim();
-    if (!cleanInput) return;
+    // ================= VIDEO DOWNLOADER =================
+    if (!url) return;
+
     setStatus("loading");
-    setErrorMsg("");
 
     try {
-      const cleanUrl = cleanInput.split("?")[0].trim();
-      const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanUrl)}`;
-      const res = await fetch(apiUrl);
+      const api = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(url)}`;
+      const res = await fetch(api);
       const data = await res.json();
 
-      if (data.success && data.downloadUrl) {
-        // Fetch the actual video/blob
-        const fileRes = await fetch(data.downloadUrl);
-        if (!fileRes.ok) throw new Error("Failed to fetch file");
-        const blob = await fileRes.blob();
-        const downloadUrl = URL.createObjectURL(blob);
-        setResults([{ name: "video.mp4", url: downloadUrl, blob }]);
-        if (data.thumbnail) {
-          const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
-          setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
-        }
-        setStatus("success");
-      } else {
-        setStatus("error");
-        setErrorMsg(data.error || "Failed to fetch download link");
-      }
-    } catch {
+      if (!data.success) throw new Error(data.error);
+
+      // 🔥 IMPORTANT FIX: DO NOT FETCH VIDEO AGAIN
+      setResults([
+        {
+          name: "Download Video",
+          url: data.downloadUrl,
+        },
+      ]);
+
+      if (data.thumbnail) setThumbnail(data.thumbnail);
+
+      setStatus("success");
+    } catch (err: any) {
+      setErrorMsg(err.message);
       setStatus("error");
-      setErrorMsg("Network error. Please try again.");
     }
   };
 
   return (
     <div className="min-h-[80vh]">
-      <ToolJsonLd tool={tool} />
+      <section className={`py-20 ${gradient}`}>
+        <div className="max-w-2xl mx-auto text-center px-4">
 
-      <section className={`relative overflow-hidden py-16 md:py-24 ${gradient}`}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto text-center">
+          <Icon className="mx-auto mb-4" size={40} />
 
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card/20 backdrop-blur-sm mb-6">
-              <Icon className="h-8 w-8 text-primary-foreground" />
-            </div>
+          <h1 className="text-3xl font-bold mb-4">{title}</h1>
+          <p className="mb-6">{description}</p>
 
-            <h1 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4">{title}</h1>
-            <p className="text-primary-foreground/80 text-lg mb-8">{description}</p>
+          {/* ================= FORM ================= */}
+          <form onSubmit={handleSubmit}>
 
-            <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-              {/* Your form inputs and buttons here */}
-            </form>
-
-            {/* Ads and other content */}
-            <div className="mt-6 flex justify-center">
-              <AdBanner adKey="2bc0fd71dd9ccc822fa5e4090e0d961e" width={300} height={250} />
-            </div>
-
-            {status === "success" && results.length > 0 && (
-              <motion.div className="mt-6 space-y-4">
-                {/* Result display */}
-                <div className="flex flex-col items-center gap-2 text-green-200">
-                  <CheckCircle2 className="h-6 w-6" />
-                  <span className="font-medium text-xl">Success!</span>
-                </div>
-                {thumbnail && (
-                  <img src={thumbnail} alt="Preview" className="w-full max-w-sm mx-auto rounded-lg shadow-lg mb-4" referrerPolicy="no-referrer" crossOrigin="anonymous" />
-                )}
-                {results.map((res, i) => (
-                  <div key={i} className="bg-card/30 backdrop-blur-md rounded-xl p-4 border border-primary-foreground/10 flex items-center justify-between">
-                    <div className="text-left overflow-hidden pr-4">
-                      <p className="text-primary-foreground font-medium truncate text-sm">{res.name}</p>
-                      {res.oldSize && res.newSize && res.oldSize > res.newSize && (
-                        <p className="text-xs text-green-300">
-                          Saved {Math.round(((res.oldSize - res.newSize) / res.oldSize) * 100)}% ({formatBytes(res.newSize)})
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="icon" variant="ghost" className="text-primary-foreground hover:bg-white/10" onClick={() => window.open(res.url, '_blank')}>
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <a href={res.url} download={res.name} className="bg-card text-foreground px-4 py-2 rounded-lg text-xs font-bold hover:scale-105 transition-transform no-underline">
-                        DOWNLOAD
-                      </a>
-                    </div>
-                  </div>
-                ))}
-                <div className="w-full flex justify-center py-2"><AdBanner /></div>
-              </motion.div>
+            {acceptFile ? (
+              <>
+                <input
+                  type="file"
+                  multiple
+                  accept={fileAccept}
+                  onChange={(e) => setFiles(Array.from(e.target.files || []))}
+                />
+              </>
+            ) : (
+              <div className="flex gap-2">
+                <Input
+                  ref={inputRef}
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder={placeholder}
+                />
+                <Button type="button" onClick={handlePaste}>
+                  <ClipboardPaste />
+                </Button>
+              </div>
             )}
-          </motion.div>
+
+            <Button type="submit" className="mt-4 w-full">
+              {status === "loading" ? <Loader2 className="animate-spin" /> : "Submit"}
+            </Button>
+          </form>
+
+          {/* 🔥 300x250 */}
+          <AdBanner adKey="2bc0fd71dd9ccc822fa5e4090e0d961e" width={300} height={250} />
+
+          {/* ================= STATUS ================= */}
+          {status === "error" && <p className="text-red-500 mt-4">{errorMsg}</p>}
+
+          {status === "success" && (
+            <div className="mt-6">
+              <CheckCircle2 className="mx-auto text-green-500" />
+
+              {thumbnail && <img src={thumbnail} className="mx-auto my-4 max-w-sm" />}
+
+              {results.map((r, i) => (
+                <div key={i} className="flex justify-between items-center p-3 border rounded mt-2">
+                  <span>{r.name}</span>
+
+                  <div className="flex gap-2">
+                    <Button onClick={() => window.open(r.url)}>
+                      <Eye />
+                    </Button>
+
+                    <a href={r.url} target="_blank">
+                      <Button>
+                        <Download />
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 🔥 320x50 */}
+          <AdBanner adKey="c1fb6e002cfa88054dace1dc2d7a964d" width={320} height={50} />
+
         </div>
       </section>
 
-      {/* Additional ads and info */}
-      <AdBanner className="container mx-auto px-4 rounded-lg" />
+      {/* 🔥 728x90 */}
+      <div className="flex justify-center my-8">
+        <AdBanner adKey="bea0808c433ba62644f402ac70f08391" width={728} height={90} />
+      </div>
 
-      {/* How it works, FAQs, related tools, etc. */}
+      {/* 🔥 468x60 */}
+      <div className="flex justify-center my-8">
+        <AdBanner adKey="5a377b4924aaffb1918162b4d2ca513f" width={468} height={60} />
+      </div>
     </div>
   );
-};
-
-export default ToolPage;
+}
