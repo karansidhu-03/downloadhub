@@ -139,29 +139,39 @@ const ToolPage = ({ tool }: ToolPageProps) => {
                   </Button>
                 </div>
               ) : (
-                <div className="flex flex-col sm:flex-row gap-3 relative">
-                  <div className="relative flex-1 group">
-                    <Input 
-                      value={url} 
-                      onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} 
-                      placeholder={placeholder} 
-                      className="flex-1 h-16 pr-24 bg-card/20 backdrop-blur-md border-2 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-primary-foreground/60 transition-all w-full" 
-                    />
-                    <Button
-                      type="button"
-                      onClick={handlePaste}
-                      variant="ghost"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-10 px-3 flex items-center gap-1.5 text-primary-foreground/70 hover:text-primary-foreground hover:bg-white/10 transition-colors rounded-xl"
-                    >
-                      <ClipboardPaste className="w-4 h-4" />
-                      <span className="text-xs font-bold">PASTE</span>
-                    </Button>
-                  </div>
-                  <Button type="submit" disabled={!url.trim() || status === "loading"} size="lg" className="h-16 px-10 bg-card text-foreground hover:bg-card/90 font-bold text-lg rounded-2xl">
-                    {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
-                  </Button>
-                </div>
-              )}
+  <div className="flex flex-col gap-3">
+    <div className="flex flex-col sm:flex-row gap-3">
+      {/* Search Input and Paste Button Group */}
+      <div className="relative flex-1 flex items-center">
+        <Input 
+          value={url} 
+          onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} 
+          placeholder={placeholder} 
+          className="h-16 pr-24 bg-card/20 backdrop-blur-md border-2 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-primary-foreground/60 transition-all w-full" 
+        />
+        {/* Visible Paste Button positioned inside the right side of the input */}
+        <Button
+          type="button"
+          onClick={handlePaste}
+          className="absolute right-2 h-12 px-4 bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground rounded-xl flex items-center gap-2 border border-primary-foreground/10 z-20"
+        >
+          <ClipboardPaste className="w-4 h-4" />
+          <span className="text-xs font-bold">PASTE</span>
+        </Button>
+      </div>
+      
+      {/* Submit Button */}
+      <Button 
+        type="submit" 
+        disabled={!url.trim() || status === "loading"} 
+        size="lg" 
+        className="h-16 px-10 bg-card text-foreground hover:bg-card/90 font-bold text-lg rounded-2xl shrink-0"
+      >
+        {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
+      </Button>
+    </div>
+  </div>
+)}
             </form>
 
             {status === "error" && (
