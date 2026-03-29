@@ -174,41 +174,43 @@ const ToolPage = ({ tool }: ToolPageProps) => {
                 </div>
             ) : (
   <div className="flex flex-col gap-4">
-    <div className="flex flex-col sm:flex-row items-center gap-2">
-      {/* 1. The Search Input */}
-      <div className="flex-1 w-full">
-        <Input 
-          ref={inputRef}
-          value={url} 
-          onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} 
-          placeholder={placeholder} 
-          className="h-16 bg-card/20 backdrop-blur-md border-2 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-primary-foreground/60 transition-all w-full" 
-        />
-      </div>
+  <div className="flex flex-col sm:flex-row items-center gap-2 w-full">
 
-      {/* 2. The Paste Button (Now Independent) */}
-      <Button
+    {/* Input with Paste inside */}
+    <div className="relative flex-1 w-full">
+      <Input 
+        ref={inputRef}
+        value={url} 
+        onChange={(e) => { setUrl(e.target.value); setStatus("idle"); }} 
+        placeholder={placeholder} 
+        className="h-16 pr-28 bg-card/20 backdrop-blur-md border-2 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/50 text-lg rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] focus:border-primary-foreground/60 transition-all w-full" 
+      />
+
+      {/* ✅ Paste button INSIDE input */}
+      <button
         type="button"
         onClick={handlePaste}
         disabled={!canPaste}
-        variant="secondary"
-        className="h-16 px-6 bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 rounded-2xl flex items-center gap-2 transition-all active:scale-95 shrink-0"
+        className="absolute right-2 top-1/2 -translate-y-1/2 h-12 px-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl flex items-center gap-2 transition-all active:scale-95"
       >
-        <ClipboardPaste className="w-5 h-5" />
-        <span className="font-bold text-sm">   
-          {canPaste ? "PASTE" : "UNSUPPORTED"} </span>
-      </Button>
-      
-      {/* 3. The Submit Button */}
-      <Button 
-        type="submit" 
-        disabled={!url.trim() || status === "loading"} 
-        className="h-16 px-10 bg-card text-foreground hover:bg-card/90 font-bold text-lg rounded-2xl shrink-0"
-      >
-        {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
-      </Button>
+        <ClipboardPaste className="w-4 h-4" />
+        <span className="text-xs font-bold">
+          {canPaste ? "PASTE" : "N/A"}
+        </span>
+      </button>
     </div>
+
+    {/* Download button */}
+    <Button 
+      type="submit" 
+      disabled={!url.trim() || status === "loading"} 
+      className="h-16 px-10 bg-card text-foreground hover:bg-card/90 font-bold text-lg rounded-2xl shrink-0"
+    >
+      {status === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
+    </Button>
+
   </div>
+</div>
 )}
             </form>
 
