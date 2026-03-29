@@ -15,7 +15,11 @@ const CategoryPage = () => {
   const Icon = category?.icon;
 
   useEffect(() => {
-    if (category) document.title = `${category.label} — Free Online Tools | ToolHub`;
+    if (category) {
+      document.title = `${category.label} — Free Online Tools | ToolHub`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute("content", `Free online ${category.label.toLowerCase()}. ${category.description} No registration required.`);
+    }
   }, [category]);
 
   if (!entry) return <Navigate to="/" replace />;

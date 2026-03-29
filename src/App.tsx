@@ -9,8 +9,9 @@ import CategoryPage from "./pages/CategoryPage";
 import ToolPageWrapper from "./pages/ToolPageWrapper";
 import DownloaderPage from "./pages/DownloaderPage";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
-import { categories, getToolBySlug } from "@/lib/tools";
+import { categories, getToolBySlug, seoRedirects } from "@/lib/tools";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,8 @@ const categorySlugs = Object.values(categories).map((c) => c.slug);
 const SlugRouter = () => {
   const { slug } = useParams<{ slug: string }>();
   if (!slug) return <Navigate to="/" replace />;
+  // SEO redirect slugs
+  if (seoRedirects[slug]) return <Navigate to={seoRedirects[slug]} replace />;
   if (categorySlugs.includes(slug)) return <CategoryPage />;
   if (getToolBySlug(slug)) return <ToolPageWrapper />;
   return <NotFound />;
@@ -34,11 +37,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/downloader" element={<DownloaderPage />} />
-            {/* Redirect old downloader routes */}
-            <Route path="/instagram-downloader" element={<Navigate to="/downloader" replace />} />
-            <Route path="/tiktok-downloader" element={<Navigate to="/downloader" replace />} />
-            <Route path="/youtube-shorts-downloader" element={<Navigate to="/downloader" replace />} />
             <Route path="/:slug" element={<SlugRouter />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

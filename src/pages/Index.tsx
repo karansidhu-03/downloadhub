@@ -41,10 +41,10 @@ const Index = () => {
               Free Online Tools — No Sign Up Required
             </span>
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-              All Your <span className="gradient-text">File Tools</span> in One Place
+              Free Online <span className="gradient-text">Video Downloader</span> & File Converter Tools
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Compress PDFs, convert images, download videos — 13+ free tools for every file task.
+              Compress PDFs, convert images, download videos from Instagram, YouTube & TikTok — 13+ free tools for every file task. No registration required.
             </p>
 
             {/* Universal Search Box */}
@@ -148,6 +148,24 @@ const Index = () => {
 
       <AdBanner className="container mx-auto px-4 rounded-lg" />
 
+      {/* SEO Introduction */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto bg-card rounded-2xl border border-border p-8">
+          <h2 className="font-display text-xl font-bold mb-4">Your All-in-One Online File Toolkit</h2>
+          <div className="text-sm text-muted-foreground space-y-3">
+            <p>
+              ToolHub is your go-to destination for free online file tools. Whether you need to <Link to="/compress-pdf" className="text-primary hover:underline">compress PDF files</Link>, <Link to="/image-compressor" className="text-primary hover:underline">optimize images</Link>, <Link to="/video-converter" className="text-primary hover:underline">convert videos to MP4</Link>, or <Link to="/downloader" className="text-primary hover:underline">download videos from Instagram, YouTube, and TikTok</Link> — we have you covered.
+            </p>
+            <p>
+              All our tools are 100% free, require no registration, and work directly in your browser. Your files never leave your device, ensuring complete privacy and security. Compatible with all devices including desktop, tablet, and mobile.
+            </p>
+            <p>
+              From <Link to="/pdf-to-word" className="text-primary hover:underline">PDF to Word conversion</Link> to <Link to="/image-resizer" className="text-primary hover:underline">image resizing</Link> and <Link to="/video-compressor" className="text-primary hover:underline">video compression</Link> — ToolHub provides fast, reliable tools for all your file needs.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -160,6 +178,17 @@ const Index = () => {
               <p className="text-sm text-muted-foreground">{f.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Blog CTA */}
+      <section className="container mx-auto px-4 pb-16">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-display text-2xl font-bold mb-3">Learn More on Our Blog</h2>
+          <p className="text-muted-foreground mb-6">Read guides and tips about PDF compression, image optimization, video downloading, and more.</p>
+          <Link to="/blog" className="inline-flex items-center gap-2 text-primary font-medium hover:underline">
+            Visit the Blog <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
     </>
