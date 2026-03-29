@@ -1,6 +1,10 @@
 import { PDFDocument } from 'pdf-lib';
 import imageCompression from 'browser-image-compression';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Setting up the worker for PDF text extraction via CDN
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 /**
  * 1. COMPRESS PDF
@@ -47,34 +51,64 @@ export const splitPDF = async (file: File) => {
 };
 
 /**
- * 4. PDF TO WORD (.docx)
+ * 4. PDF TO WORD (.docx) - FULL EXTRACTION VERSION
  */
 export const pdfToWord = async (file: File) => {
   const arrayBuffer = await file.arrayBuffer();
-  const pdfDoc = await PDFDocument.load(arrayBuffer);
-  const pageCount = pdfDoc.getPageCount();
+  
+  // Load PDF with PDF.js to "read" the text
+  const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+  const pdf = await loadingTask.promise;
+  const numPages = pdf.numPages;
+  const docChildren: Paragraph[] = [];
 
+  // Add a simple Title/Header to the Word Doc
+  docChildren.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: `Converted Document: ${file.name}`, bold: true, size: 32 }),
+      ],
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: `Total Pages Extracted: ${numPages}`, italics: true, size: 20 }),
+      ],
+    }),
+    new Paragraph({ text: "" }) // Spacer
+  );
+
+  // Loop through pages to extract text content
+  for (let i = 1; i <= numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    
+    // Join text items into a single string for the page
+    const pageString = textContent.items
+      .map((item: any) => item.str)
+      .join(" ");
+
+    docChildren.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: `--- Page ${i} ---`, color: "999999", size: 16 }),
+        ],
+      }),
+      new Paragraph({
+        children: [new TextRun({ text: pageString, size: 24 })],
+      }),
+      new Paragraph({ text: "" }) // Page spacer
+    );
+  }
+
+  // Create the Word document structure
   const doc = new Document({
     sections: [{
       properties: {},
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({ text: `Converted Document: ${file.name}`, bold: true, size: 28 }),
-          ],
-        }),
-        new Paragraph({
-          children: [
-            new TextRun({ text: `Total Pages in Source: ${pageCount}`, italics: true }),
-          ],
-        }),
-        new Paragraph({
-          text: "Content extraction successful. Layout may vary from original PDF.",
-        }),
-      ],
+      children: docChildren,
     }],
   });
 
+  // Pack the document into a real .docx blob
   return await Packer.toBlob(doc);
 };
 
