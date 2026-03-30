@@ -225,34 +225,65 @@ const ToolPage = ({ tool }: ToolPageProps) => {
     setStatus("loading");
     setErrorMsg("");
 
-    try {
+    try {try {
   const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanInput)}`;
+
   const res = await fetch(apiUrl);
-  
-  if (!res.ok) throw new Error("Server not responding");
 
-  const data = await res.json();
+  // Always read as text first (prevents hidden JSON/network issues)
+  const text = await res.text();
 
-  if (data && data.success) {
-    const items: ProcessedResult[] = [];
-    if (data.downloadUrl) items.push({ name: "Download MP4", url: data.downloadUrl, blob: new Blob() });
-    if (data.audioUrl) items.push({ name: "Download MP3", url: data.audioUrl, blob: new Blob() });
-
-    if (items.length === 0) throw new Error("No downloadable content found");
-
-    setResults(items);
-    if (data.thumbnail) {
-      const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
-      setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
-    }
-    setStatus("success");
-  } else {
-    throw new Error(data.error || "Failed to fetch download link");
-  }
-} catch (err: any) {
-  setStatus("error");
-  setErrorMsg(err.message || "Network error. Please try again.");
-}
+  let data;
+  try {
+              data = JSON.parse(text);
+            } catch {
+              throw new Error("Invalid response from server");
+            }
+          
+            if (!res.ok) {
+              throw new Error(data?.error || "Server error");
+            }
+          
+            if (!data.success) {
+              throw new Error(data?.error || "Download not available");
+            }
+          
+            const items: ProcessedResult[] = [];
+          
+            if (data.downloadUrl) {
+              items.push({
+                name: "Download Video",
+                url: data.downloadUrl,
+                blob: new Blob()
+              });
+            }
+          
+            if (data.audioUrl) {
+              items.push({
+                name: "Download Audio",
+                url: data.audioUrl,
+                blob: new Blob()
+              });
+            }
+          
+            if (items.length === 0) {
+              throw new Error("No downloadable content found");
+            }
+          
+            setResults(items);
+          
+            if (data.thumbnail) {
+              const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
+              setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
+            }
+          
+            setStatus("success");
+          
+          } catch (err: any) {
+            console.error("Download error:", err);
+            setStatus("error");
+            setErrorMsg(err.message || "Download failed");
+        } 
     };
 
   return (
