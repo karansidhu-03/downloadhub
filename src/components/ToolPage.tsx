@@ -228,35 +228,28 @@ const ToolPage = ({ tool }: ToolPageProps) => {
     setThumbnail("");   // ✅ clear previous preview
 
     try {
-        const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanInput)}`;
-      
-        const res = await fetch(apiUrl); // Simple GET request
-
-                if (!res.ok) {
-                  const errorText = await res.text();
-                  console.error("Server raw response:", errorText);
-                  throw new Error(`Server Error: ${res.status}`);
-                }
-                
-        const data = await res.json();
-      
-        // Always read as text first (prevents hidden JSON/network issues)
-        const text = await res.text();
-      
-        let data;
-          try {
-              data = JSON.parse(text);
-            } catch {
-              throw new Error("Invalid response from server");
+  const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanInput)}`;
+  
+  const res = await fetch(apiUrl);
+  
+  // Read as text FIRST to debug and handle potential non-JSON errors
+  const rawText = await res.text();
+  let data;
+  
+  try {
+              data = JSON.parse(rawText);
+            } catch (e) {
+              console.error("Failed to parse JSON:", rawText);
+              throw new Error("Invalid response from server.");
             }
           
-        if (!res.ok || !data.success) {
-                throw new Error(data?.error || "Download not available at this moment.");
-              }
+            if (!res.ok || !data.success) {
+              throw new Error(data?.error || `Server error: ${res.status}`);
+            }
           
-        const items: ProcessedResult[] = [];
+            const items: ProcessedResult[] = [];
           
-        if (data.downloadUrl && data.downloadUrl.startsWith("http")) {
+            if (data.downloadUrl?.startsWith("http")) {
               items.push({
                 name: "Download Video",
                 url: data.downloadUrl,
@@ -264,7 +257,7 @@ const ToolPage = ({ tool }: ToolPageProps) => {
               });
             }
           
-        if (data.audioUrl && data.audioUrl.startsWith("http")) {
+            if (data.audioUrl?.startsWith("http")) {
               items.push({
                 name: "Download Audio",
                 url: data.audioUrl,
@@ -272,13 +265,13 @@ const ToolPage = ({ tool }: ToolPageProps) => {
               });
             }
           
-        if (items.length === 0) {
+            if (items.length === 0) {
               throw new Error("No downloadable content found");
             }
           
-        setResults(items);
+            setResults(items);
           
-        if (data.thumbnail) {
+            if (data.thumbnail) {
               const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
               setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
             }
@@ -287,10 +280,10 @@ const ToolPage = ({ tool }: ToolPageProps) => {
           
           } catch (err: any) {
             console.error("Detailed Error:", err);
-              setStatus("error");
-              // This will now show the actual error instead of a generic network message
-              setErrorMsg(err.name === 'TypeError' ? "Network/CORS Error: Check Worker Logs" : err.message);
-            }
+            setStatus("error");
+            // Check specifically for CORS/Network failures
+            setErrorMsg(err.name === 'TypeError' ? "Connection blocked by browser (CORS). Check Worker headers." : err.message);
+          }    
 };
   return (
     <div className="min-h-[80vh]">
