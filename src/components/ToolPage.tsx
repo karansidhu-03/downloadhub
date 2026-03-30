@@ -285,7 +285,7 @@ const ToolPage = ({ tool }: ToolPageProps) => {
             console.error("Download error:", err);
             setStatus("error");
             setErrorMsg(err.message || "Download failed"); 
-      };
+      }
 
   return (
     <div className="min-h-[80vh]">
