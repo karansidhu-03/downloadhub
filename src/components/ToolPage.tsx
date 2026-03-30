@@ -63,10 +63,20 @@ const ToolPage = ({ tool }: ToolPageProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (typeof navigator === "undefined" || !navigator.clipboard || !navigator.clipboard.readText) {
-      setCanPaste(false);
-    }
-  }, []);
+  if (!navigator?.clipboard?.readText) {
+    setCanPaste(false);
+  }
+}, []);
+  
+  useEffect(() => {
+  return () => {
+    results.forEach(r => {
+      if (r.url.startsWith("blob:")) {
+        URL.revokeObjectURL(r.url);
+      }
+    });
+  };
+}, [results]);
 
   const relatedTools = getRelatedTools(tool.slug);
 
@@ -75,11 +85,11 @@ const ToolPage = ({ tool }: ToolPageProps) => {
       const text = await navigator.clipboard.readText();
       if (!text) throw new Error("Clipboard is empty");
       setUrl(text.trim());
-      inputRef.current?.focus();
-      setStatus("idle");
+if (inputRef.current) inputRef.current.focus(); // ADD THE "IF" CHECK
+setStatus("idle");
     } catch (err) {
       setStatus("error");
-      setErrorMsg("Paste blocked. Please press Ctrl+V.");
+      setErrorMsg("Paste blocked. Use Ctrl+V / Cmd+V.");
     }
   };
 
@@ -111,20 +121,49 @@ const ToolPage = ({ tool }: ToolPageProps) => {
           }];
         } else {
           processed = await processBatch(files, async (f) => {
-            if (tool.slug === "compress-pdf") return await compressPDF(f);
-            if (tool.slug === "image-compressor") return await compressImageFile(f);
+            if (tool.slug === "compress-pdf") {
+  const blob = await compressPDF(f);
+  return {
+    blob,
+    name: f.name,
+    oldSize: f.size,
+    newSize: blob.size
+  };
+}
+            if (tool.slug === "image-compressor") {
+  const result = await compressImageFile(f);
+  return {
+    ...result,
+    oldSize: f.size,
+    newSize: result.blob.size
+  };
+}
             
             if (tool.slug === "pdf-to-word") {
-              const blob = await pdfToWord(f);
-              // Ensure the filename ends with .docx
-              const newName = f.name.replace(/\.[^/.]+$/, "") + ".docx";
-              return { blob, name: newName };
-            }
+  const blob = await pdfToWord(f);
+  const newName = f.name.replace(/\.[^/.]+$/, "") + ".docx";
+  return { 
+    blob, 
+    name: newName, 
+    url: URL.createObjectURL(blob) // ADD THIS LINE
+  };
+}
             
-            if (tool.slug === "split-pdf") return { blob: await splitPDF(f) };
+            if (tool.slug === "split-pdf") {
+  const blob = await splitPDF(f);
+  return {
+    blob,
+    name: f.name.replace(/\.[^/.]+$/, "_split.pdf")
+  };
+}
             throw new Error("Tool logic not found.");
           });
         }
+        results.forEach(r => {
+  if (r.url.startsWith("blob:")) {
+    URL.revokeObjectURL(r.url);
+  }
+});
 
         setResults(processed);
         setStatus("success");
@@ -142,27 +181,34 @@ const ToolPage = ({ tool }: ToolPageProps) => {
     setErrorMsg("");
 
     try {
-      const cleanUrl = cleanInput;
-      const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanUrl)}`;
-      const res = await fetch(apiUrl);
-      const data = await res.json();
+  const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanInput)}`;
+  const res = await fetch(apiUrl);
+  
+  if (!res.ok) throw new Error("Server not responding");
 
-      if (data.success && data.downloadUrl) {
-        setResults([{ name: "download", url: data.downloadUrl, blob: new Blob() }]);
-        if (data.thumbnail) {
-          const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
-          setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
-        }
-        setStatus("success");
-      } else {
-        setStatus("error");
-        setErrorMsg(data.error || "Failed to fetch download link");
-      }
-    } catch {
-      setStatus("error");
-      setErrorMsg("Network error. Please try again.");
+  const data = await res.json();
+
+  if (data && data.success) {
+    const items: ProcessedResult[] = [];
+    if (data.downloadUrl) items.push({ name: "Download MP4", url: data.downloadUrl, blob: new Blob() });
+    if (data.audioUrl) items.push({ name: "Download MP3", url: data.audioUrl, blob: new Blob() });
+
+    if (items.length === 0) throw new Error("No downloadable content found");
+
+    setResults(items);
+    if (data.thumbnail) {
+      const workerBase = "https://toolhubworker.karanvirsidhu03.workers.dev";
+      setThumbnail(`${workerBase}/proxy-image?img=${encodeURIComponent(data.thumbnail)}`);
     }
-  };
+    setStatus("success");
+  } else {
+    throw new Error(data.error || "Failed to fetch download link");
+  }
+} catch (err: any) {
+  setStatus("error");
+  setErrorMsg(err.message || "Network error. Please try again.");
+}
+    };
 
   return (
     <div className="min-h-[80vh]">
@@ -194,13 +240,26 @@ const ToolPage = ({ tool }: ToolPageProps) => {
                       multiple={tool.slug !== "split-pdf"} 
                       className="hidden" 
                       onChange={(e) => {
-                        setFiles(Array.from(e.target.files || []));
-                        setStatus("idle");
-                      }} 
+  const selectedFiles = Array.from(e.target.files || []);
+  setFiles(selectedFiles);
+  setStatus("idle");
+  setResults([]);
+  setThumbnail("");
+}}
                     />
                   </label>
                   <Button type="submit" disabled={files.length === 0 || status === "loading"} size="lg" className="mt-6 w-full bg-card text-foreground hover:bg-card/90 font-semibold">
-                    {status === "loading" ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : <><Download className="mr-2 h-4 w-4" /> Process Files</>}
+                    {status === "loading" ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-5 w-5 mr-2" />
+                      Process Files
+                    </>
+                  )}
                   </Button>
                 </div>
               ) : (
