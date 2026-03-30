@@ -102,6 +102,11 @@ setStatus("idle");
         setErrorMsg("Please select at least one file to continue.");
         return;
       }
+      results.forEach(r => {
+      if (r.url && r.url.startsWith("blob:")) {
+        URL.revokeObjectURL(r.url);
+      }
+    });
       
       setStatus("loading");
       setErrorMsg("");
@@ -126,6 +131,7 @@ setStatus("idle");
   return {
     blob,
     name: f.name,
+    url: URL.createObjectURL(blob),
     oldSize: f.size,
     newSize: blob.size
   };
@@ -134,6 +140,7 @@ setStatus("idle");
   const result = await compressImageFile(f);
   return {
     ...result,
+    url: URL.createObjectURL(result.blob),
     oldSize: f.size,
     newSize: result.blob.size
   };
@@ -153,18 +160,13 @@ setStatus("idle");
   const blob = await splitPDF(f);
   return {
     blob,
-    name: f.name.replace(/\.[^/.]+$/, "_split.pdf")
+    name: f.name.replace(/\.[^/.]+$/, "_split.pdf"),
+    url: URL.createObjectURL(blob)
   };
 }
             throw new Error("Tool logic not found.");
           });
         }
-        results.forEach(r => {
-  if (r.url.startsWith("blob:")) {
-    URL.revokeObjectURL(r.url);
-  }
-});
-
         setResults(processed);
         setStatus("success");
       } catch (err: any) {
@@ -240,6 +242,7 @@ setStatus("idle");
                       multiple={tool.slug !== "split-pdf"} 
                       className="hidden" 
                       onChange={(e) => {
+                        if (status === "loading") return;
   const selectedFiles = Array.from(e.target.files || []);
   setFiles(selectedFiles);
   setStatus("idle");
