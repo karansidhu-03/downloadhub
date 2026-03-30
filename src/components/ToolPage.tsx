@@ -230,13 +230,15 @@ const ToolPage = ({ tool }: ToolPageProps) => {
     try {
         const apiUrl = `https://toolhubworker.karanvirsidhu03.workers.dev?url=${encodeURIComponent(cleanInput)}`;
       
-        const res = await fetch(apiUrl, {
-                      method: 'GET',
-                      mode: 'cors', // Explicitly ask for CORS
-                      headers: {
-                        'Accept': 'application/json',
-                      },
-                    });
+        const res = await fetch(apiUrl); // Simple GET request
+
+                if (!res.ok) {
+                  const errorText = await res.text();
+                  console.error("Server raw response:", errorText);
+                  throw new Error(`Server Error: ${res.status}`);
+                }
+                
+        const data = await res.json();
       
         // Always read as text first (prevents hidden JSON/network issues)
         const text = await res.text();
