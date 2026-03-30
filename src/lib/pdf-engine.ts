@@ -4,7 +4,8 @@ import { Document, Packer, Paragraph, TextRun } from 'docx';
 import * as pdfjsLib from 'pdfjs-dist';
 
 // Setting up the worker for PDF text extraction via CDN
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 /**
  * 1. COMPRESS PDF
@@ -12,12 +13,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.j
 export const compressPDF = async (file: File) => {
   const arrayBuffer = await file.arrayBuffer();
   const pdfDoc = await PDFDocument.load(arrayBuffer);
-  const pdfBytes = await pdfDoc.save({ 
-    useObjectStreams: true,
-    addDefaultPage: false 
+
+  const pdfBytes = await pdfDoc.save({
+    useObjectStreams: true
   });
+
   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  return { blob, oldSize: file.size, newSize: blob.size };
+  return blob;
 };
 
 /**
@@ -84,7 +86,7 @@ export const pdfToWord = async (file: File) => {
     
     // Join text items into a single string for the page
     const pageString = textContent.items
-      .map((item: any) => item.str)
+      .map((item: any) => item.str || "")
       .join(" ");
 
     docChildren.push(
@@ -116,12 +118,15 @@ export const pdfToWord = async (file: File) => {
  * 5. IMAGE COMPRESSION
  */
 export const compressImageFile = async (file: File) => {
-  const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
-  const compressedFile = await imageCompression(file, options);
-  const blob = new Blob([compressedFile], { type: file.type });
-  return { blob, oldSize: file.size, newSize: blob.size };
-};
-
+          const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
+          const compressedFile = await imageCompression(file, options);
+          const blob = new Blob([compressedFile], { type: file.type });
+          return { 
+                blob: compressedFile, 
+                oldSize: file.size, 
+                newSize: compressedFile.size 
+              };
+    };
 /**
  * BATCH PROCESSOR
  */
